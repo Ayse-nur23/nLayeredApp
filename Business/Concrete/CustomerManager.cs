@@ -48,6 +48,13 @@ public class CustomerManager : ICustomerService
         return deletedCustomerResponse;
     }
 
+    public async Task<GetListCustomerResponse> GetAsync(string id)
+    {
+        var data = await _customerDal.GetAsync(predicate: c=>c.Id == id);
+        GetListCustomerResponse getListCustomerResponse = _mapper.Map<GetListCustomerResponse>(data);
+        return getListCustomerResponse;
+    }
+
     public async Task<IPaginate<GetListCustomerResponse>> GetListAsync(PageRequest pageRequest)
     {
         var data = await _customerDal.GetListAsync(index: pageRequest.PageIndex,

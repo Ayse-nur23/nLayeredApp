@@ -46,6 +46,13 @@ public class CategoryManager : ICategoryService
         return deletedCategoryResponse;
     }
 
+    public async Task<GetListCategoryResponse> GetAsync(int id)
+    {
+        var data = await _categoryDal.GetAsync(predicate: p => p.Id == id);
+        GetListCategoryResponse getListCategoryResponse = _mapper.Map<GetListCategoryResponse>(data);
+        return getListCategoryResponse;
+    }
+
     public async Task<IPaginate<GetListCategoryResponse>> GetListAsync(PageRequest pageRequest)
     {
         var data = await _categoryDal.GetListAsync(index: pageRequest.PageIndex,
