@@ -17,6 +17,8 @@ namespace WebApi
             builder.Services.AddBusinessServices();
             builder.Services.AddDataAccessServices(builder.Configuration);
 
+            builder.Services.AddCors(opt => opt.AddDefaultPolicy(p => { p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -35,6 +37,8 @@ namespace WebApi
 
 
             app.MapControllers();
+
+            app.UseCors(opt => opt.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 
             app.Run();
         }

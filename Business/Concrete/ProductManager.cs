@@ -46,9 +46,14 @@ public class ProductManager : IProductService
     }
 
 
-    public Task<GetListProductResponse> GetAsync(int id)
+    public async Task<GetListProductResponse> GetAsync(int id)
     {
-        throw new NotImplementedException();
+        var data = await _productDal.GetAsync(
+            include: p => p.Include(p => p.Category),
+            predicate: p=>p.Id == id
+            );
+        var result = _mapper.Map<GetListProductResponse>(data);
+        return result;
     }
 
     public async Task<IPaginate<GetListProductResponse>> GetListAsync(PageRequest pageRequest)

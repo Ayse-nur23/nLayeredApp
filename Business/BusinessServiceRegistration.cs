@@ -26,6 +26,7 @@ namespace Business
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<ICategoryService, CategoryManager>();
             services.AddScoped<ICustomerService, CustomerManager>();
+            services.AddScoped<ICustomerCustomerDemoService, CustomerCustomerDemoManager>();
 
 
 

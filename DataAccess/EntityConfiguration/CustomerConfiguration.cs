@@ -21,6 +21,8 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(b => b.Country).HasColumnName("Country");
 
         builder.HasIndex(indexExpression: b => b.CompanyName, name: "UK_Customer_CompanyName").IsUnique();
+
+        builder.HasMany(b => b.CustomerDemographics);
         builder.HasQueryFilter(b => !b.DeletedDate.HasValue);
     }
 }
