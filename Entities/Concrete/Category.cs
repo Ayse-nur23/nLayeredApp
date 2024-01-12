@@ -10,5 +10,16 @@ namespace Entities.Concrete;
 public class Category : Entity<int>
 {
     public string Name { get; set; }
-    public List<Product> Products { get; set; }
+    public virtual ICollection<Product> Products { get; set; }
+
+    public Category()
+    {
+        Products = new HashSet<Product>();
+    }
+
+    public Category(int id, string name) : this()
+    {
+        Id = id;
+        Name = name;
+    }
 }

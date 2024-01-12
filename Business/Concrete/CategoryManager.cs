@@ -30,7 +30,7 @@ public class CategoryManager : ICategoryService
 
     public async Task<CreatedCategoryResponse> Add(CreateCategoryRequest createCategoryRequest)
     {
-        await _categoryBusinessRules.MaximumCategoryIsTen();
+     //   await _categoryBusinessRules.MaximumCategoryIsTen();
         Category category = _mapper.Map<Category>(createCategoryRequest);
         Category createdCategory = await _categoryDal.AddAsync(category);
         CreatedCategoryResponse createdCategoryResponse = _mapper.Map<CreatedCategoryResponse>(createdCategory);

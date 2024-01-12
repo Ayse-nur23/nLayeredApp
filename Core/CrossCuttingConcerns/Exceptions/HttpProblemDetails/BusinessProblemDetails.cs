@@ -18,3 +18,4 @@ public class BusinessProblemDetails : ProblemDetails
         Type = "https://example.com/probs/business";
     }
 }
+

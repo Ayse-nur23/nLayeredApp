@@ -15,4 +15,10 @@ public class BusinessMesaages
     public static string CityCustomerLimit = "Bir şehirde max 10 kişi olabilir.";
 
     public static string? ExistsContactName = "Bu iletişim adı mevcut.";
+
+    public static string UserNotFound = "Kullanıcı bulunamadı";
+    public static string PasswordError = "Şifre hatalı";
+    public static string SuccessfulLogin = "Sisteme giriş başarılı";
+    public static string UserAlreadyExists = "Bu kullanıcı zaten mevcut";
+
 }

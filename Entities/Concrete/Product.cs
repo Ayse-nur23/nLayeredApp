@@ -15,4 +15,19 @@ public class Product : Entity<int>
     public short UnitsInStock { get; set; }
     public string QuantityPerUnit { get; set; }
     public Category Category { get; set; }
+
+    public Product()
+    {
+        
+    }
+
+    public Product(int id, int categoryId, string productName, decimal unitPrice, short unitsInStock, string quantityPerUnit)
+    {
+        Id = id;
+        CategoryId = categoryId;
+        ProductName = productName;
+        UnitPrice = unitPrice;
+        UnitsInStock = unitsInStock;
+        QuantityPerUnit = quantityPerUnit;
+    }
 }

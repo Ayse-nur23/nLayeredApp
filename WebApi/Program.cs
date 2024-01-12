@@ -32,7 +32,8 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
-            app.ConfigureCustomExceptionMiddleware();
+            if(app.Environment.IsProduction())
+                app.ConfigureCustomExceptionMiddleware();
             app.UseAuthorization();
 
 

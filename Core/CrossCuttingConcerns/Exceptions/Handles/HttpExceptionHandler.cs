@@ -1,11 +1,17 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions.Extensions;
+using Core.CrossCuttingConcerns.Exceptions.Handles;
 using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ValidationProblemDetails = Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails.ValidationProblemDetails;
 
-namespace Core.CrossCuttingConcerns.Exceptions.Handles;
+namespace Core.CrossCuttingConcerns.Exceptions.Handlers;
 
 public class HttpExceptionHandler : ExceptionHandler
 {
@@ -29,10 +35,10 @@ public class HttpExceptionHandler : ExceptionHandler
     //    return Response.WriteAsync(details);
     //}
 
-    //protected override Task HandleException(ValidationException validationException)
-    //{
-    //    Response.StatusCode = StatusCodes.Status400BadRequest;
-    //    string details = new ValidationProblemDetails(validationException.Errors).AsJson();
-    //    return Response.WriteAsync(details);
-    //}
+    protected override Task HandleException(ValidationException validationException)
+    {
+        Response.StatusCode = StatusCodes.Status400BadRequest;
+        string details = new ValidationProblemDetails(validationException.Errors).AsJson();
+        return Response.WriteAsync(details);
+    }
 }
