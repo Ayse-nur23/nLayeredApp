@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Business.Abstract;
-using Business.Dtos.Requests;
-using Business.Dtos.Responses;
+using Business.Dtos.Customers;
 using Business.Rules;
+using Core.Aspects.Autofac.Caching;
 using Core.DataAccess.Dynamic;
 using Core.DataAccess.Paging;
 using DataAccess.Abstract;
-using DataAccess.Concrete;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,9 +17,9 @@ namespace Business.Concrete;
 
 public class CustomerManager : ICustomerService
 {
-    ICustomerDal _customerDal;
-    IMapper _mapper;
-    CustomerBusinessRules _customerBusinessRules;
+    private readonly ICustomerDal _customerDal;
+    private readonly IMapper _mapper;
+    private readonly CustomerBusinessRules _customerBusinessRules;
 
     public CustomerManager(ICustomerDal customerDal, CustomerBusinessRules customerBusinessRules, IMapper mapper)
     {
@@ -48,13 +47,15 @@ public class CustomerManager : ICustomerService
         return deletedCustomerResponse;
     }
 
-    public async Task<GetListCustomerResponse> GetAsync(string id)
+    [CacheAspect]
+    public async Task<GetListCustomerResponse> GetAsync(Guid id)
     {
         var data = await _customerDal.GetAsync(predicate: c=>c.Id == id);
         GetListCustomerResponse getListCustomerResponse = _mapper.Map<GetListCustomerResponse>(data);
         return getListCustomerResponse;
     }
 
+    [CacheAspect]
     public async Task<IPaginate<GetListCustomerResponse>> GetListAsync(PageRequest pageRequest)
     {
         var data = await _customerDal.GetListAsync(index: pageRequest.PageIndex,

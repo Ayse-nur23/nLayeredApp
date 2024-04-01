@@ -24,7 +24,7 @@ public class CategoryBusinessRules : BaseBusinessRules
         var result = await _categoryDal.GetListAsync();
         if (result.Count >= 10)
         {
-            throw new BusinessException(BusinessMesaages.CategoryLimit);
+            throw new BusinessException(BusinessMessages.CategoryLimit);
         }
     }
 }

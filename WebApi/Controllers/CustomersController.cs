@@ -1,5 +1,5 @@
 ﻿using Business.Abstract;
-using Business.Dtos.Requests;
+using Business.Dtos.Customers;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ namespace WebApi.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        ICustomerService _customerService;
+        private readonly ICustomerService _customerService;
 
         public CustomersController(ICustomerService customerService)
         {

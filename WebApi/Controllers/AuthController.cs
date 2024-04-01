@@ -1,7 +1,10 @@
 ﻿using Business.Abstract;
-using Business.Dtos.Requests;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.RefreshTokens;
+using Business.Dtos.Users;
+using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Net;
 
 namespace WepAPI.Controllers
 {
@@ -9,48 +12,63 @@ namespace WepAPI.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private IAuthService _authService;
-
-        public AuthController(IAuthService authService)
+        private readonly IAuthService _authService;
+        private readonly IRefreshTokenService _refreshTokenService;
+        public AuthController(IAuthService authService, IRefreshTokenService refreshTokenService)
         {
             _authService = authService;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpPost("login")]
-        public ActionResult Login(UserForLoginRequest userForLoginRequest)
+        public async Task<IActionResult> Login([FromBody] UserForLoginRequest userForLoginRequest)
         {
-            var userToLogin = _authService.Login(userForLoginRequest);
-            if (userToLogin == null)
-            {
-                return BadRequest();
-            }
-
-            var result = _authService.CreateAccessToken(userToLogin.Result);
-            if (result != null)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
+            string? IpAddress = getIpAddress();
+            var loginResult = await _authService.Login(userForLoginRequest, IpAddress);
+            setRefreshTokenToCookie(loginResult.RefreshToken);
+            return Ok(loginResult.AccessToken);
         }
 
         [HttpPost("register")]
-        public ActionResult Register(UserForRegisterRequest userForRegisterRequest)
+        public async Task<IActionResult> Register([FromBody] UserForRegisterRequest userForRegisterRequest)
         {
-            var userExists = _authService.UserExists(userForRegisterRequest.Email);
-            if (userExists != null )
-            {
-                return BadRequest(userExists);
-            }
+            string? IpAddress = getIpAddress();
+            var registerResult = await _authService.Register(userForRegisterRequest, userForRegisterRequest.Password, IpAddress);
+            setRefreshTokenToCookie(registerResult.RefreshToken);
+            return Ok(registerResult);
 
-            var registerResult = _authService.Register(userForRegisterRequest, userForRegisterRequest.Password);
-            var result = _authService.CreateAccessToken(registerResult.Result);
-            if (result != null)
-            {
-                return Ok(result);
-            }
+        }
 
-            return BadRequest(result);
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = await _refreshTokenService.RefreshAccessToken(getRefreshTokenFromCookie(), getIpAddress());
+            setRefreshTokenToCookie(refreshToken.RefreshToken);
+            return Ok(refreshToken.AccessToken);
+        }
+
+        [HttpPut("RevokeToken")]
+        public async Task<IActionResult> RevokeToken([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] string? refreshToken)
+        {
+            var result = await _refreshTokenService.RevokedToken(refreshToken ?? getRefreshTokenFromCookie(), getIpAddress());
+            return Ok(result);
+        }
+
+        private string getRefreshTokenFromCookie() =>
+       Request.Cookies["refreshToken"] ?? throw new ArgumentException("Refresh token is not found in request cookies.");
+
+        protected string getIpAddress()
+        {
+            string ipAddress = Request.Headers.ContainsKey("X-Forwarded-For")
+                ? Request.Headers["X-Forwarded-For"].ToString()
+                : HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString()
+                    ?? throw new InvalidOperationException("IP address cannot be retrieved from request.");
+            return ipAddress;
+        }
+        private void setRefreshTokenToCookie(RefreshToken refreshToken)
+        {
+            CookieOptions cookieOptions = new() { HttpOnly = true, Expires = DateTime.Now.AddMinutes(2) };
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
     }
 }

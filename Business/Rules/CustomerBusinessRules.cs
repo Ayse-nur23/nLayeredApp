@@ -20,7 +20,7 @@ public class CustomerBusinessRules : BaseBusinessRules
         var result = await _customerDal.GetListAsync(predicate: p => p.City == city, size: 15);
         if (result.Count >= 10)
         {
-            throw new BusinessException(BusinessMesaages.CityCustomerLimit);
+            throw new BusinessException(BusinessMessages.CityCustomerLimit);
         }
     }
 
@@ -29,7 +29,7 @@ public class CustomerBusinessRules : BaseBusinessRules
         var result = await _customerDal.GetListAsync(predicate: p => p.ContactName == contactName);
         if (result != null)
         {
-            throw new BusinessException(BusinessMesaages.ExistsContactName);
+            throw new BusinessException(BusinessMessages.ExistsContactName);
         }
     }
 

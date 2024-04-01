@@ -21,12 +21,12 @@ public class ProductBusinessRules : BaseBusinessRules
         _productDal = productDal;
     }
 
-    public async Task EachCategoryCanContainMax20Products(int categoryId)
+    public async Task EachCategoryCanContainMax20Products(Guid categoryId)
     {
         var result = await _productDal.GetListAsync(predicate: p => p.CategoryId == categoryId , size : 25);
         if (result.Count >= 20)
         {
-            throw new BusinessException(BusinessMesaages.CategoryProductLimit);
+            throw new BusinessException(BusinessMessages.CategoryProductLimit);
         }
     }
 

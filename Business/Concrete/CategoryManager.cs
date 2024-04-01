@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Business.Abstract;
-using Business.Dtos.Requests;
-using Business.Dtos.Responses;
+using Business.Dtos.Categories;
 using Business.Rules;
+using Business.Validators.Categories;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Validation;
 using Core.DataAccess.Dynamic;
 using Core.DataAccess.Paging;
 using DataAccess.Abstract;
-using DataAccess.Concrete;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace Business.Concrete;
 
 public class CategoryManager : ICategoryService
 {
-    ICategoryDal _categoryDal;
-    IMapper _mapper;
-    CategoryBusinessRules _categoryBusinessRules;
+    private readonly ICategoryDal _categoryDal;
+    private readonly IMapper _mapper;
+    private readonly CategoryBusinessRules _categoryBusinessRules;
     public CategoryManager(ICategoryDal categoryDal, IMapper mapper, CategoryBusinessRules categoryBusinessRules)
     {
         _categoryDal = categoryDal;
@@ -28,9 +29,10 @@ public class CategoryManager : ICategoryService
         _categoryBusinessRules = categoryBusinessRules;
     }
 
+    [ValidationAspect(typeof(CreateCategoryRequestValidatior))]
     public async Task<CreatedCategoryResponse> Add(CreateCategoryRequest createCategoryRequest)
     {
-     //   await _categoryBusinessRules.MaximumCategoryIsTen();
+       await _categoryBusinessRules.MaximumCategoryIsTen();
         Category category = _mapper.Map<Category>(createCategoryRequest);
         Category createdCategory = await _categoryDal.AddAsync(category);
         CreatedCategoryResponse createdCategoryResponse = _mapper.Map<CreatedCategoryResponse>(createdCategory);
@@ -46,13 +48,15 @@ public class CategoryManager : ICategoryService
         return deletedCategoryResponse;
     }
 
-    public async Task<GetListCategoryResponse> GetAsync(int id)
+    [CacheAspect]
+    public async Task<GetListCategoryResponse> GetAsync(Guid id)
     {
         var data = await _categoryDal.GetAsync(predicate: p => p.Id == id);
         GetListCategoryResponse getListCategoryResponse = _mapper.Map<GetListCategoryResponse>(data);
         return getListCategoryResponse;
     }
 
+    [CacheAspect]
     public async Task<IPaginate<GetListCategoryResponse>> GetListAsync(PageRequest pageRequest)
     {
         var data = await _categoryDal.GetListAsync(index: pageRequest.PageIndex,
@@ -61,6 +65,7 @@ public class CategoryManager : ICategoryService
         return result;
     }
 
+    [ValidationAspect(typeof(UpdateCategoryRequestValidatior))]
     public async Task<UpdatedCategoryResponse> Update(UpdateCategoryRequest updateCategoryRequest)
     {
         Category category = _mapper.Map<Category>(updateCategoryRequest);

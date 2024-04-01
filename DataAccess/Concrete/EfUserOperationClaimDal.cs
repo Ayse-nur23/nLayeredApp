@@ -5,9 +5,9 @@ using DataAccess.Context;
 
 namespace DataAccess.Concrete;
 
-public class EfUserOperationClaimDal : EfRepositoryBase<UserOperationClaim, int, NorthwindContext>, IUserOperationClaimDal
+public class EfUserOperationClaimDal : EfRepositoryBase<UserOperationClaim, Guid, NorthwindCloneContext>, IUserOperationClaimDal
 {
-    public EfUserOperationClaimDal(NorthwindContext context) : base(context)
+    public EfUserOperationClaimDal(NorthwindCloneContext context) : base(context)
     {
     }
 }

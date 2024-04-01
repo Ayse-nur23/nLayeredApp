@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete;
 
-public class EfCategoryDal : EfRepositoryBase<Category, int, NorthwindContext>, ICategoryDal
+public class EfCategoryDal : EfRepositoryBase<Category, Guid, NorthwindCloneContext>, ICategoryDal
 {
-    public EfCategoryDal(NorthwindContext context) : base(context)
+    public EfCategoryDal(NorthwindCloneContext context) : base(context)
     {
     }
 }

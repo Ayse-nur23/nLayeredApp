@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete;
 
-public class EfCustomerDal : EfRepositoryBase<Customer, string, NorthwindContext>, ICustomerDal
+public class EfCustomerDal : EfRepositoryBase<Customer, Guid, NorthwindCloneContext>, ICustomerDal
 {
-    public EfCustomerDal(NorthwindContext context) : base(context)
+    public EfCustomerDal(NorthwindCloneContext context) : base(context)
     {
     }
 }

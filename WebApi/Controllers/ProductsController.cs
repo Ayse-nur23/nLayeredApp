@@ -1,9 +1,9 @@
 ﻿using Business.Abstract;
-using Business.Dtos.Requests;
-using Business.Dtos.Responses;
+using Business.Dtos.Products;
 using Core.DataAccess.Paging;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+//using Core.Validation.ActionFilter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -12,18 +12,20 @@ namespace WebApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        IProductService _productService;
+        private readonly IProductService _productService;
 
         public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
 
+        // [Authorize(Roles = "admin")]
+        // [ServiceFilter(typeof(ValidationFilter))]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] CreateProductRequest createProductRequest)
         {
             await _productService.Add(createProductRequest);
-            return Ok();
+            return Ok(createProductRequest);
         }
 
 
@@ -49,9 +51,17 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getById")]
-        public async Task<IActionResult> GetAsync(int id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
             var result = await _productService.GetAsync(id);
+            return Ok(result);
+        }
+
+        [HttpPost("transaction")]
+        public IActionResult TransactionTest()
+        {
+            var result = _productService.TransactionalOperation();
+
             return Ok(result);
         }
     }

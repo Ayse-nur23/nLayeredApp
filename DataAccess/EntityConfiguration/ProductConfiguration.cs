@@ -1,14 +1,6 @@
 ﻿using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
 namespace DataAccess.EntityConfiguration;
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
@@ -18,6 +10,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.ToTable("Products").HasKey(b => b.Id);
         builder.Property(b => b.Id ).HasColumnName("ProductId").IsRequired(); 
         builder.Property(b => b.CategoryId).HasColumnName("CategoryId");
+        builder.Property(b => b.FileUploadId).HasColumnName("FileUploadId");
         builder.Property(b => b.ProductName).HasColumnName("ProductName").IsRequired(); 
         builder.Property(b => b.UnitPrice).HasColumnName("UnitPrice"); 
         builder.Property(b => b.UnitsInStock).HasColumnName("UnitsInStock");
@@ -25,6 +18,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.HasIndex(indexExpression: b => b.ProductName, name: "UK_Products_ProductName").IsUnique();
         builder.HasOne(b => b.Category);
+        builder.HasOne(b => b.FileUpload);
         builder.HasQueryFilter(b => !b.DeletedDate.HasValue);
     }
 }

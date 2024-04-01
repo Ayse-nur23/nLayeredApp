@@ -1,5 +1,4 @@
-﻿using Business.Dtos.Requests;
-using Business.Dtos.Responses;
+﻿using Business.Dtos.Customers;
 using Core.DataAccess.Dynamic;
 using Core.DataAccess.Paging;
 
@@ -9,7 +8,7 @@ public interface ICustomerService
 {
     Task<IPaginate<GetListCustomerResponse>> GetListAsync(PageRequest pageRequest);
 
-     Task<GetListCustomerResponse> GetAsync(string id);
+     Task<GetListCustomerResponse> GetAsync(Guid id);
     Task<CreatedCustomerResponse> Add(CreateCustomerRequest createCustomerRequest);
     Task<DeletedCustomerResponse> Delete(DeleteCustomerRequest deleteCustomerRequest);
     Task<UpdatedCustomerResponse> Update(UpdateCustomerRequest updateCustomerRequest);

@@ -1,5 +1,4 @@
-﻿using Business.Dtos.Requests;
-using Business.Dtos.Responses;
+﻿using Business.Dtos.Categories;
 using Core.DataAccess.Dynamic;
 using Core.DataAccess.Paging;
 using System;
@@ -13,7 +12,7 @@ namespace Business.Abstract;
 public interface ICategoryService
 {
    Task<IPaginate<GetListCategoryResponse>> GetListAsync(PageRequest pageRequest);
-   Task<GetListCategoryResponse> GetAsync(int id);
+   Task<GetListCategoryResponse> GetAsync(Guid id);
     Task<CreatedCategoryResponse> Add(CreateCategoryRequest createCategoryRequest);
     Task<DeletedCategoryResponse> Delete(DeleteCategoryRequest deleteCategoryRequest);
     Task<UpdatedCategoryResponse> Update(UpdateCategoryRequest updateCategoryRequest);

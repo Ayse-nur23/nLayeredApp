@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete;
 
-public class Category : Entity<int>
+public class Category : Entity<Guid>
 {
     public string Name { get; set; }
     public virtual ICollection<Product> Products { get; set; }
 
-    public Category()
-    {
-        Products = new HashSet<Product>();
-    }
+    public Category() => Products = new HashSet<Product>();
 
-    public Category(int id, string name) : this()
+    public Category(Guid id, string name) : this()
     {
         Id = id;
         Name = name;

@@ -22,4 +22,3 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.HasQueryFilter(b => !b.DeletedDate.HasValue);
     }
 }
-//Her pairin tek github projesi olacak fakat ödev sistemine bireysel yüklenecek.

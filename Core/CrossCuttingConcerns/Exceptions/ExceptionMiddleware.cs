@@ -1,6 +1,8 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions.Handlers;
-using Core.CrossCuttingConcerns.Exceptions.Handles;
+using Core.CrossCuttingConcerns.Logging;
+using Core.CrossCuttingConcerns.Serilog;
 using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace Core.CrossCuttingConcerns.Exceptions;
 
@@ -12,12 +14,12 @@ public class ExceptionMiddleware
     //private readonly LoggerServiceBase _loggerService;
 
     public ExceptionMiddleware(RequestDelegate next
-       /* IHttpContextAccessor contextAccessor, LoggerServiceBase loggerService*/)
+        /*,IHttpContextAccessor contextAccessor, LoggerServiceBase loggerService*/)
     {
         _next = next; //controllerdan gelen get,post,put gibi isteklerin delegesi
         _httpExceptionHandler = new HttpExceptionHandler();
-      //  _contextAccessor = contextAccessor;
-       // _loggerService = loggerService;
+        //_contextAccessor = contextAccessor;
+        //_loggerService = loggerService;
     }
 
     public async Task Invoke(HttpContext context)

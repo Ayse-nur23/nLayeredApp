@@ -15,14 +15,14 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         builder.ToTable("Customers").HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("CustomerID").IsRequired();
-        builder.Property(b => b.CompanyName).HasColumnName("CompanyName").IsRequired(); ;
+        builder.Property(b => b.CompanyName).HasColumnName("CompanyName").IsRequired();
         builder.Property(b => b.ContactName).HasColumnName("ContactName");
         builder.Property(b => b.City).HasColumnName("City");
         builder.Property(b => b.Country).HasColumnName("Country");
 
         builder.HasIndex(indexExpression: b => b.CompanyName, name: "UK_Customer_CompanyName").IsUnique();
 
-        builder.HasMany(b => b.CustomerDemographics);
+      
         builder.HasQueryFilter(b => !b.DeletedDate.HasValue);
     }
 }

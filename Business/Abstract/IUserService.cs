@@ -1,6 +1,8 @@
-﻿using Business.Dtos.Requests;
-using Business.DTOs.Users;
+﻿using Business.Dtos.Users;
+using Core.DataAccess.Dynamic;
+using Core.DataAccess.Paging;
 using Core.Entities.Concrete;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +13,13 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        //List<OperationClaim> GetClaims(User user);
-        //List<GetOperationClaimResponse> GetClaims(CreatedUserResponse createdUserResponse);
-
-        //void Add(User user);
         Task<UserAuth> Add(UserAuth userAuth);
-        //User GetByMail(string email);
+        Task<UpdatedUserResponse> Update(UpdateUserRequest updateUserRequest);
         Task<UserAuth> GetByMail(string email);
+        Task<UserAuth> GetById(Guid id);
+        Task<DeletedUserResponse> Delete(DeleteUserRequest deleteUserRequest);
 
+        Task<IPaginate<GetListUserResponse>> GetListAsync(PageRequest pageRequest);
 
     }
 }

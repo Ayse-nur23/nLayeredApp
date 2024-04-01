@@ -9,6 +9,6 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract;
 
-public interface IProductDal : IRepository<Product, int>, IAsyncRepository<Product, int>
+public interface IProductDal : IRepository<Product, Guid>, IAsyncRepository<Product, Guid>
 {
 }

@@ -1,13 +1,15 @@
-﻿using Core.DataAccess.Dynamic;
+﻿using Business.Dtos.UserOperationClaims;
+using Core.DataAccess.Dynamic;
 using Core.DataAccess.Paging;
-using Business.DTOs.Users;
-using Business.Dtos.Responses;
 using Core.Entities.Concrete;
 
 namespace Business.Abstract;
 
 public interface IUserOperationClaimService
 {
-   Task<IList<OperationClaim>> GetClaims(int id);
-
+    Task<IPaginate<GetListUserOperationClaimResponse>> GetListAsync(PageRequest pageRequest);
+    Task<CreatedUserOperationClaimResponse> Add(CreateUserOperationClaimRequest createUserOperationClaimRequest);
+    Task<DeletedUserOperationClaimResponse> Delete(DeleteUserOperationClaimRequest deleteUserOperationClaimRequest);
+    Task<UpdatedUserOperationClaimResponse> Update(UpdateUserOperationClaimRequest updateUserOperationClaimRequest);
+    Task<IList<OperationClaim>> GetClaims(Guid id);
 }

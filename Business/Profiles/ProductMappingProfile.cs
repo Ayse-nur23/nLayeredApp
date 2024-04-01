@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Business.Dtos.Requests;
-using Business.Dtos.Responses;
+using Business.Dtos.Products;
 using Core.DataAccess.Dynamic;
 using Entities.Concrete;
 using System;
@@ -16,10 +15,7 @@ public class ProductMappingProfile : Profile
     public ProductMappingProfile()
     {
         CreateMap<Paginate<Product>, Paginate<GetListProductResponse>>().ReverseMap();
-        CreateMap<Product, GetListProductResponse>()
-            .ForMember(destinationMember: p => p.CategoryName,
-            memberOptions: opt => opt.MapFrom(p => p.Category.Name))
-            .ReverseMap();
+        CreateMap<Product, GetListProductResponse>().ReverseMap();
 
 
         CreateMap<Product, CreatedProductResponse>().ReverseMap();

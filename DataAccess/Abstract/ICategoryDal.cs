@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract;
 
-public interface ICategoryDal : IRepository<Category, int>, IAsyncRepository<Category, int>
+public interface ICategoryDal : IRepository<Category, Guid>, IAsyncRepository<Category, Guid>
 {
 }

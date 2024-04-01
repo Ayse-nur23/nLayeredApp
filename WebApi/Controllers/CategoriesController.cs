@@ -1,5 +1,5 @@
 ﻿using Business.Abstract;
-using Business.Dtos.Requests;
+using Business.Dtos.Categories;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ namespace WebApi.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        ICategoryService _categoryService;
+        private readonly ICategoryService _categoryService;
 
         public CategoriesController(ICategoryService categoryService)
         {
